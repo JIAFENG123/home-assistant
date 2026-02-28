@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Sun, Moon, Thermometer, Droplets, Power, Home, User, Settings } from 'lucide-react'
 import './App.css'
 
-const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:8000/api'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 
 function App() {
   const [status, setStatus] = useState(null)
