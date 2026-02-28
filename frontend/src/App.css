@@ -1,3 +1,21 @@
+:root {
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-primary: #212529;
+  --text-secondary: #868e96;
+  --primary: #339af0;
+  --accent: #ff6b6b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #1a1a1a;
+    --card-bg: #2d2d2d;
+    --text-primary: #f8f9fa;
+    --text-secondary: #adb5bd;
+  }
+}
+
 .container {
   max-width: 600px;
   margin: 0 auto;
@@ -5,23 +23,20 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-}
-
-h1 {
-  font-size: 24px;
-  margin: 0;
+  margin-bottom: 24px;
 }
 
 .status-badge {
-  background-color: #339af0;
+  background: var(--primary);
   color: white;
   padding: 4px 12px;
   border-radius: 20px;
@@ -29,41 +44,31 @@ h1 {
   font-weight: 600;
 }
 
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 16px;
-  margin-bottom: 30px;
-}
-
-.card {
-  background: var(--card-bg, #ffffff);
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  display: flex;
-  align-items: center;
   gap: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid #eee;
-}
-
-@media (prefers-color-scheme: dark) {
-  .card {
-    background: #2d2d2d;
-    border-color: #444;
-  }
 }
 
 .stat-card {
-  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .stat-info .label {
   display: block;
   font-size: 12px;
-  color: #868e96;
+  color: var(--text-secondary);
 }
 
 .stat-info .value {
@@ -71,66 +76,155 @@ h1 {
   font-weight: 700;
 }
 
+.control-card {
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.control-card:active {
+  transform: scale(0.98);
+}
+
 .control-card.active {
-  background-color: #fff4e6;
-  border-color: #ffd8a8;
+  background: #e7f5ff;
+  border-color: #a5d8ff;
 }
 
 @media (prefers-color-scheme: dark) {
   .control-card.active {
-    background-color: #443c2d;
-    border-color: #8a734a;
+    background: #1864ab33;
+    border-color: #1864ab;
   }
-}
-
-.control-info .label {
-  display: block;
-  font-size: 12px;
-  color: #868e96;
-}
-
-.control-info .status-text {
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.modes h3 {
-  font-size: 18px;
-  margin-bottom: 12px;
 }
 
 .mode-buttons {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .mode-buttons button {
   flex: 1;
-  padding: 12px;
+  padding: 10px;
   border-radius: 12px;
-  border: 1px solid #ddd;
-  background: white;
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  border: 1px solid #dee2e6;
+  background: var(--card-bg);
+  color: var(--text-primary);
   font-weight: 600;
-  cursor: pointer;
-}
-
-@media (prefers-color-scheme: dark) {
-  .mode-buttons button {
-    background: #333;
-    border-color: #444;
-    color: white;
-  }
 }
 
 .mode-buttons button.active {
-  background: #339af0;
+  background: var(--primary);
   color: white;
-  border-color: #228be6;
+  border-color: var(--primary);
+}
+
+/* Inventory Styles */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card-bg);
+  padding: 8px 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.add-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-form input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  background: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.add-form .row {
+  display: flex;
+  gap: 10px;
+}
+
+.add-form button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.item-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-main {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.item-name {
+  display: block;
+  font-weight: 600;
+}
+
+.item-loc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.item-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-color);
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+.item-qty button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .bottom-nav {
@@ -139,40 +233,42 @@ h1 {
   left: 0;
   right: 0;
   height: 70px;
-  background: white;
-  border-top: 1px solid #eee;
+  background: var(--card-bg);
   display: flex;
   justify-content: space-around;
   align-items: center;
-}
-
-@media (prefers-color-scheme: dark) {
-  .bottom-nav {
-    background: #1a1a1a;
-    border-color: #333;
-  }
+  border-top: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
 }
 
 .nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  color: #adb5bd;
   background: none;
   border: none;
-  font-size: 11px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
 }
 
 .nav-item.active {
-  color: #339af0;
+  color: var(--primary);
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .loading {
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  font-size: 18px;
   font-weight: 600;
 }
