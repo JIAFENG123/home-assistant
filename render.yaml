@@ -1,5 +1,5 @@
 services:
-  # Backend (Python API)
+  # Backend
   - type: web
     name: home-assistant-backend
     env: python
@@ -10,12 +10,13 @@ services:
       - key: PYTHON_VERSION
         value: 3.10.0
 
-  # Frontend (Static Site)
-  - type: static
+  # Frontend
+  - type: web
     name: home-assistant-frontend
-    buildCommand: npm install && npm run build
-    publishDir: dist
+    env: static
     rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishDir: dist
     routes:
       - type: rewrite
         source: /api/*
