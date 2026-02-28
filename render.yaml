@@ -11,7 +11,7 @@ services:
         value: 3.10.0
 
   # Frontend (Static Site)
-  - type: static_site
+  - type: static
     name: home-assistant-frontend
     buildCommand: npm install && npm run build
     publishDir: dist
