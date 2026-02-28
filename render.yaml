@@ -15,7 +15,8 @@ services:
     name: home-assistant-frontend
     env: static
     buildCommand: npm install && npm run build
-    publishDir: dist
+    # 修正这里：从 publishDir 改为 staticPublishDir
+    staticPublishDir: dist
     rootDir: frontend
     routes:
       - type: rewrite
