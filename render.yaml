@@ -1,5 +1,5 @@
 services:
-  # Backend
+  # Backend (Python API)
   - type: web
     name: home-assistant-backend
     env: python
@@ -10,13 +10,11 @@ services:
       - key: PYTHON_VERSION
         value: 3.10.0
 
-  # Frontend
-  - type: web
+  # Frontend (Static Site)
+  - type: static
     name: home-assistant-frontend
-    env: static
     buildCommand: npm install && npm run build
-    # 修正这里：从 publishDir 改为 staticPublishDir
-    staticPublishDir: dist
+    publishDir: dist
     rootDir: frontend
     routes:
       - type: rewrite
