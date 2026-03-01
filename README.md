@@ -1,25 +1,50 @@
-# Smart Home Assistant
+# Home Assistant - Family Edition
 
-A simple, mobile-responsive Home Assistant dashboard built with FastAPI and React.
+A mobile-friendly, persistent Home Assistant application for families.
 
-## Project Structure
-- `/backend`: FastAPI Python server
-- `/frontend`: React + Vite dashboard
+## Features
 
-## Getting Started
+- **Family Login:** Enter your family name to access your personal dashboard.
+- **Persistent Inventory:** Keep track of household items (Groceries, Electronics, etc.). Data is saved per family.
+- **Control Panel:** Manage lights and modes (Home/Away/Night).
+- **Mobile First:** Designed for mobile usage.
+
+## Setup
 
 ### Backend
-1. `cd backend`
-2. `pip install -r requirements.txt`
-3. `uvicorn main:app --reload`
+
+1. Navigate to `backend`:
+   ```sh
+   cd backend
+   ```
+2. Install dependencies:
+   ```sh
+   pip install -r requirements.txt
+   ```
+3. Run the server:
+   ```sh
+   python main.py
+   ```
+   The API will be available at `http://localhost:8000`.
 
 ### Frontend
-1. `cd frontend`
-2. `npm install`
-3. `npm run dev`
 
-## Deployment to Render
-1. Push this project to GitHub.
-2. Connect your GitHub account to [Render](https://render.com).
-3. Render will automatically detect the `render.yaml` file and deploy both services.
-   - Note: You may need to update the `destination` URL in `render.yaml` under the frontend rewrite rule to match your actual backend URL after the first deployment.
+1. Navigate to `frontend`:
+   ```sh
+   cd frontend
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Run the development server:
+   ```sh
+   npm run dev
+   ```
+   Open `http://localhost:5173` in your browser.
+
+## Tech Stack
+
+- **Backend:** FastAPI, SQLite, SQLAlchemy
+- **Frontend:** React, React Router, Axios, Lucide Icons
+- **Styling:** CSS (Mobile-first)
