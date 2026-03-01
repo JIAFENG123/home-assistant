@@ -6,7 +6,10 @@
   --primary: #339af0;
   --primary-hover: #228be6;
   --accent: #ff6b6b;
+  --warning: #ff922b;
   --border-color: #dee2e6;
+  --note-bg: #fff9db;
+  --note-border: #fcc419;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,6 +19,8 @@
     --text-primary: #f8f9fa;
     --text-secondary: #adb5bd;
     --border-color: #495057;
+    --note-bg: #333333;
+    --note-border: #666666;
   }
 }
 
@@ -174,79 +179,116 @@ main {
   border: 1px solid rgba(0,0,0,0.03);
 }
 
+/* Dashboard New Layout */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
-  gap: 16px;
-  margin-bottom: 24px;
+    margin-bottom: 24px;
 }
 
-.stat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+
+/* New Dashboard Sections */
+.alert-section, .board-section {
+    margin-bottom: 24px;
 }
 
-.stat-info .label {
-  display: block;
-  font-size: 12px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.alert-section h3, .board-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin: 0 0 12px 0;
 }
 
-.stat-info .value {
-  font-size: 24px;
-  font-weight: 700;
+.chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
-.control-card {
-  grid-column: span 2; /* Full width */
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  cursor: pointer;
-  transition: transform 0.1s, background 0.2s;
+.chip {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
 }
 
-.control-card.active {
-  background: var(--primary);
-  color: white;
+.chip.warning {
+    background: #fff3bf;
+    color: #e67700;
 }
 
-.control-card.active .label, 
-.control-card.active .status-text {
-    color: rgba(255,255,255,0.9);
+.note-input {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
 }
 
-.control-info {
+.note-input input {
     flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: var(--card-bg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    color: var(--text-primary);
+}
+
+.note-input button {
+    background: var(--primary);
+    color: white;
+    width: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-input button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.note-card {
+    background: var(--card-bg);
+    padding: 16px;
+    border-radius: 16px;
+    position: relative;
+    border-left: 4px solid var(--primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
-.mode-buttons {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 4px;
+.note-card p {
+    margin: 0;
+    padding-right: 24px;
+    font-size: 15px;
+    line-height: 1.4;
 }
 
-.mode-buttons button {
-  flex: 1;
-  padding: 16px;
-  border-radius: 16px;
-  background: var(--card-bg);
-  color: var(--text-secondary);
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+.delete-note {
+    background: none;
+    color: var(--text-secondary);
+    padding: 4px;
 }
 
-.mode-buttons button.active {
-  background: var(--text-primary);
-  color: var(--bg-color);
+.delete-note:hover {
+    color: var(--accent);
+}
+
+.empty-notes {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 14px;
 }
 
 /* Inventory Styles */

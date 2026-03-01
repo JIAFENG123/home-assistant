@@ -1,6 +1,7 @@
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, Float, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, Float, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from datetime import datetime
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./home_assistant.db"
 
@@ -16,11 +17,14 @@ class Family(Base):
 
     name = Column(String, primary_key=True, index=True)
     lights = Column(Boolean, default=False)
+    # Removing direct sensor columns as they are no longer needed
+    # but keeping them in DB structure to avoid migration issues for now
     temperature = Column(Float, default=24.0)
     humidity = Column(Float, default=45.0)
     mode = Column(String, default="Home")
 
     items = relationship("Item", back_populates="family")
+    notes = relationship("Note", back_populates="family", cascade="all, delete-orphan")
 
 class Item(Base):
     __tablename__ = "items"
@@ -34,6 +38,16 @@ class Item(Base):
     family_name = Column(String, ForeignKey("families.name"))
 
     family = relationship("Family", back_populates="items")
+
+class Note(Base):
+    __tablename__ = "notes"
+
+    id = Column(String, primary_key=True, index=True)
+    content = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    family_name = Column(String, ForeignKey("families.name"))
+
+    family = relationship("Family", back_populates="notes")
 
 def init_db():
     Base.metadata.create_all(bind=engine)

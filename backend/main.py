@@ -3,8 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
 import uuid
+from datetime import datetime
 from sqlalchemy.orm import Session
-from database import SessionLocal, init_db, Family, Item as DBItem
+from database import SessionLocal, init_db, Family, Item as DBItem, Note as DBNote
 
 app = FastAPI(title="Home Assistant API")
 
@@ -29,11 +30,6 @@ def get_db():
 class FamilyLogin(BaseModel):
     name: str
 
-class ToggleRequest(BaseModel):
-    device: str
-
-class ModeRequest(BaseModel):
-    mode: str
 
 class Item(BaseModel):
     name: str
@@ -45,14 +41,22 @@ class Item(BaseModel):
 class ItemUpdate(BaseModel):
     quantity: Optional[float] = None
 
+class NoteBase(BaseModel):
+    content: str
+
+class NoteOut(NoteBase):
+    id: str
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
 # Helper to get current family context
 def get_current_family(x_family_name: Optional[str] = Header(None), db: Session = Depends(get_db)):
     if not x_family_name:
         raise HTTPException(status_code=400, detail="X-Family-Name header required")
     family = db.query(Family).filter(Family.name == x_family_name).first()
     if not family:
-        # Auto-create for simplicity if not exists, or strict check?
-        # Let's auto-create to be friendly for the demo.
         family = Family(name=x_family_name)
         db.add(family)
         db.commit()
@@ -71,25 +75,10 @@ async def login(login_data: FamilyLogin, db: Session = Depends(get_db)):
 @app.get("/api/status")
 async def get_status(family: Family = Depends(get_current_family)):
     return {
-        "lights": family.lights,
-        "temperature": family.temperature,
-        "humidity": family.humidity,
-        "mode": family.mode
+        "status": "online",
+        "family": family.name
     }
 
-@app.post("/api/toggle")
-async def toggle_device(request: ToggleRequest, family: Family = Depends(get_current_family), db: Session = Depends(get_db)):
-    if request.device == "lights":
-        family.lights = not family.lights
-        db.commit()
-    return {"status": "success", "lights": family.lights}
-
-@app.post("/api/mode")
-async def set_mode(request: ModeRequest, family: Family = Depends(get_current_family), db: Session = Depends(get_db)):
-    if request.mode in ["Home", "Away", "Night"]:
-        family.mode = request.mode
-        db.commit()
-    return {"status": "success", "mode": family.mode}
 
 # Inventory Endpoints
 @app.get("/api/items")
@@ -133,6 +122,32 @@ async def update_item(item_id: str, update: ItemUpdate, family: Family = Depends
     db.commit()
     db.refresh(item)
     return item
+
+# Notes Endpoints
+@app.get("/api/notes", response_model=List[NoteOut])
+async def get_notes(family: Family = Depends(get_current_family), db: Session = Depends(get_db)):
+    return db.query(DBNote).filter(DBNote.family_name == family.name).order_by(DBNote.created_at.desc()).all()
+
+@app.post("/api/notes", response_model=NoteOut)
+async def add_note(note: NoteBase, family: Family = Depends(get_current_family), db: Session = Depends(get_db)):
+    new_note = DBNote(
+        id=str(uuid.uuid4()),
+        content=note.content,
+        family_name=family.name
+    )
+    db.add(new_note)
+    db.commit()
+    db.refresh(new_note)
+    return new_note
+
+@app.delete("/api/notes/{note_id}")
+async def delete_note(note_id: str, family: Family = Depends(get_current_family), db: Session = Depends(get_db)):
+    note = db.query(DBNote).filter(DBNote.id == note_id, DBNote.family_name == family.name).first()
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+    db.delete(note)
+    db.commit()
+    return {"status": "success"}
 
 if __name__ == "__main__":
     import uvicorn
